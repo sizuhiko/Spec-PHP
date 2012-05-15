@@ -247,5 +247,17 @@ describe. "Spec matchers".
             "fOO" should not be nocase equal to "f00";
         end.
     end;
+
+    describe "日本語を使ったテスト"
+        it "文字列として識別可能である"
+
+            'いろは' should be string;
+            "いろは" should have type 'string';
+            'いろは' should be scalar;
+
+            any(array(1, '２', 3)) should be string;
+        end.
+    end
+
 end;
 

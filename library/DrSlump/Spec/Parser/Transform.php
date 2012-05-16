@@ -122,7 +122,7 @@ class Transform {
             $tkn = $this->it->current();
             throw new Exception("Unexpected exception found while parsing token $tkn->type '$tkn->value' at line $tkn->line", null, $e);
         }
-
+var_dump($this->target);
         return $this->target;
     }
 
@@ -291,7 +291,7 @@ class Transform {
         case Token::IDENT:
         case Token::RCURLY:
             $ident = strtolower($token->value);
-            if (in_array($ident, array('describe', 'context', 'it', 'specify', 'before', 'before_each', 'after', 'after_each', 'end', '}'))) {
+            if (in_array($ident, array('describe', 'context', 'subject', 'it', 'specify', 'before', 'before_each', 'after', 'after_each', 'end', '}'))) {
                 $this->dumpStatement();
                 $this->transition(self::BLOCK);
                 return $token;
@@ -341,6 +341,10 @@ class Transform {
 
             $this->blocks->push($lval);
 
+            if ($hasMessage) {
+                $this->write('$subject = isset($subject) && is_callable($subject) ? $subject : function(){ throw new Exception("No subject"); };');
+            }
+
             $this->write(self::SPEC_CLASS . '::' . $lval . '(');
 
             $args = array('$W');
@@ -360,7 +364,49 @@ class Transform {
 
             $this->write('function(');
             $this->write(implode(', ', $args));
-            $this->write('){');
+            if ($hasMessage) {
+                $this->write(') use($subject) {');
+            } else {
+                $this->write(') {');
+            }
+
+            $this->pushBlock($this->indent);
+            $this->transition(self::PHP);
+
+            if ($next->type !== Token::EOL) {
+                $next = $this->skip(Token::WHITESPACE);
+                // If there is an open brace register the current nested braces to match the close one
+                if ($next->type === Token::LCURLY) {
+                    $this->curlyBlocks[] = $this->curlyLevel;
+                    $next = $this->skip(Token::WHITESPACE);
+                } else if ($next->type !== Token::EOL) {
+                    $next = $this->skip(Token::WHITESPACE, Token::DOT, Token::SEMICOLON, Token::COLON);
+                }
+
+                if ($next->type !== Token::EOL) {
+                    throw new Exception('Expected EOL but found "' . $next->value . '" at line ' . $next->line);
+                }
+            }
+
+            return $next;
+
+        case 'subject':
+
+            $next = $this->skip(Token::WHITESPACE, Token::DOT);
+            if ($next->type === Token::LPAREN) {
+                $this->appendStatement($token);
+                $this->appendStatement($next);
+                $this->transition(self::PHP);
+                return false;
+            }
+
+            $this->dumpStatement();
+
+            $this->closeIndentedBlocks();
+
+            $this->blocks->push($lval);
+
+            $this->write('$subject = function() use($W){');
 
             $this->pushBlock($this->indent);
             $this->transition(self::PHP);
@@ -394,10 +440,9 @@ class Transform {
 
         case 'end':
             $this->popBlock();
-            $this->write('});');
-            $this->closeIndentedBlocks();
 
-            $this->blocks->pop();
+            $this->write( $this->blocks->pop() == 'subject' ? '};' : '});' );
+            $this->closeIndentedBlocks();
 
             $this->transition(self::PHP);
             return $this->skip(Token::WHITESPACE, Token::DOT, Token::SEMICOLON);
@@ -458,7 +503,11 @@ class Transform {
 
             // Define the expectation wrapper
             $this->write(self::SPEC_CLASS . '::expect(');
-            $this->dumpStatement();
+            if($this->statement->isEmpty()) {
+                $this->write('$subject()');
+            } else {
+                $this->dumpStatement();
+            }
             $this->write(')->');
             $this->transition(self::SHOULD);
             return false;

@@ -122,7 +122,6 @@ class Transform {
             $tkn = $this->it->current();
             throw new Exception("Unexpected exception found while parsing token $tkn->type '$tkn->value' at line $tkn->line", null, $e);
         }
-var_dump($this->target);
         return $this->target;
     }
 
@@ -291,7 +290,7 @@ var_dump($this->target);
         case Token::IDENT:
         case Token::RCURLY:
             $ident = strtolower($token->value);
-            if (in_array($ident, array('describe', 'context', 'subject', 'it', 'specify', 'before', 'before_each', 'after', 'after_each', 'end', '}'))) {
+            if (in_array($ident, array('describe', 'context', 'it', 'specify', 'before', 'before_each', 'after', 'after_each', 'subject', 'end', '}'))) {
                 $this->dumpStatement();
                 $this->transition(self::BLOCK);
                 return $token;
@@ -326,70 +325,6 @@ var_dump($this->target);
         case 'before_each':
         case 'after':
         case 'after_each':
-
-            $next = $this->skip(Token::WHITESPACE, Token::DOT);
-            if ($next->type === Token::LPAREN) {
-                $this->appendStatement($token);
-                $this->appendStatement($next);
-                $this->transition(self::PHP);
-                return false;
-            }
-
-            $this->dumpStatement();
-
-            $this->closeIndentedBlocks();
-
-            $this->blocks->push($lval);
-
-            if ($hasMessage) {
-                $this->write('$subject = isset($subject) && is_callable($subject) ? $subject : function(){ throw new Exception("No subject"); };');
-            }
-
-            $this->write(self::SPEC_CLASS . '::' . $lval . '(');
-
-            $args = array('$W');
-            if ($hasMessage && $next->type !== Token::QUOTED) {
-                throw new Exception('Expected quoted string at line ' . $token->line);
-            } else if ($hasMessage) {
-                $this->write($next->value);
-                $this->write(', ');
-
-                // Count "placeholders" in the message
-                $msg = substr($next->value, 1, -1);
-                preg_match_all('/([\'"<])[^\s]+(\1|>)/', $msg, $m);
-                for ($i=1; $i<=count($m[0]); $i++) {
-                    $args[] = '$arg' . $i;
-                }
-            }
-
-            $this->write('function(');
-            $this->write(implode(', ', $args));
-            if ($hasMessage) {
-                $this->write(') use($subject) {');
-            } else {
-                $this->write(') {');
-            }
-
-            $this->pushBlock($this->indent);
-            $this->transition(self::PHP);
-
-            if ($next->type !== Token::EOL) {
-                $next = $this->skip(Token::WHITESPACE);
-                // If there is an open brace register the current nested braces to match the close one
-                if ($next->type === Token::LCURLY) {
-                    $this->curlyBlocks[] = $this->curlyLevel;
-                    $next = $this->skip(Token::WHITESPACE);
-                } else if ($next->type !== Token::EOL) {
-                    $next = $this->skip(Token::WHITESPACE, Token::DOT, Token::SEMICOLON, Token::COLON);
-                }
-
-                if ($next->type !== Token::EOL) {
-                    throw new Exception('Expected EOL but found "' . $next->value . '" at line ' . $next->line);
-                }
-            }
-
-            return $next;
-
         case 'subject':
 
             $next = $this->skip(Token::WHITESPACE, Token::DOT);
@@ -406,7 +341,29 @@ var_dump($this->target);
 
             $this->blocks->push($lval);
 
-            $this->write('$subject = function() use($W){');
+            $this->write(self::SPEC_CLASS . '::' . $lval . '(');
+
+            $args = array('$W');
+            if($lval == 'it') {
+                $args[] = '$suite';
+            }
+            if ($hasMessage && $next->type !== Token::QUOTED) {
+                throw new Exception('Expected quoted string at line ' . $token->line);
+            } else if ($hasMessage) {
+                $this->write($next->value);
+                $this->write(', ');
+
+                // Count "placeholders" in the message
+                $msg = substr($next->value, 1, -1);
+                preg_match_all('/([\'"<])[^\s]+(\1|>)/', $msg, $m);
+                for ($i=1; $i<=count($m[0]); $i++) {
+                    $args[] = '$arg' . $i;
+                }
+            }
+
+            $this->write('function(');
+            $this->write(implode(', ', $args));
+            $this->write('){');
 
             $this->pushBlock($this->indent);
             $this->transition(self::PHP);
@@ -440,9 +397,10 @@ var_dump($this->target);
 
         case 'end':
             $this->popBlock();
-
-            $this->write( $this->blocks->pop() == 'subject' ? '};' : '});' );
+            $this->write('});');
             $this->closeIndentedBlocks();
+
+            $this->blocks->pop();
 
             $this->transition(self::PHP);
             return $this->skip(Token::WHITESPACE, Token::DOT, Token::SEMICOLON);
@@ -504,7 +462,7 @@ var_dump($this->target);
             // Define the expectation wrapper
             $this->write(self::SPEC_CLASS . '::expect(');
             if($this->statement->isEmpty()) {
-                $this->write('$subject()');
+                $this->write('$suite->runSubject($W)');
             } else {
                 $this->dumpStatement();
             }

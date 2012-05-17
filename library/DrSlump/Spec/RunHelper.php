@@ -373,6 +373,9 @@ class RunHelper
         // First param is always the current test object
         $params = array($test->getSuite()->getWorld());
 
+        // Second param is test suite
+        $params[] = $test->getSuite();
+
         // Extract values from parametrized titles
         preg_match_all('/([\'"<])(.*?)(\1|>)/', $test->getTitle(), $m);
         $params = array_merge($params, $m[2]);

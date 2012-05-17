@@ -4,12 +4,12 @@ describe "Subject"
     return 1;
   end
   it "subject == 1"
-    $subject() should equal 1
+    should equal 1
   end
 
   context "nested context can access to subject"
     it "subject == 1"
-      $subject() should equal 1
+      should equal 1
     end
   end
 
@@ -18,13 +18,13 @@ describe "Subject"
       return 2;
     end
     it "subject == 2"
-      $subject() should equal 2
+      should equal 2
     end
   end
 
   context "after nested context can access to this block subject"
     it "subject == 1"
-      $subject() should equal 1
+      should equal 1
     end
   end
 

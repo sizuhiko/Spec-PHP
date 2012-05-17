@@ -366,6 +366,17 @@ class Spec
         return $dir;
     }
 
+    /**
+     * Register subject in the current suite
+     *
+     * @static
+     * @param Closure $cb 
+     */
+    public static function subject($cb)
+    {
+        self::suite()->setSubject($cb);
+    }
+
 }
 
 

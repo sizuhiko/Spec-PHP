@@ -70,6 +70,9 @@ class Transform {
     protected $curlyLevel = 0;
     protected $curlyBlocks = array();
 
+    // current block value for its block
+    private $currentBlockTitle;
+
     public function __construct(\Iterator $it)
     {
         $this->it = $it;
@@ -290,7 +293,7 @@ class Transform {
         case Token::IDENT:
         case Token::RCURLY:
             $ident = strtolower($token->value);
-            if (in_array($ident, array('describe', 'context', 'it', 'specify', 'before', 'before_each', 'after', 'after_each', 'subject', 'end', '}'))) {
+            if (in_array($ident, array('describe', 'context', 'it', 'its', 'specify', 'before', 'before_each', 'after', 'after_each', 'subject', 'end', '}'))) {
                 $this->dumpStatement();
                 $this->transition(self::BLOCK);
                 return $token;
@@ -319,6 +322,7 @@ class Transform {
         switch ($lval) {
         case 'describe':
         case 'it':
+        case 'its':
             $hasMessage = true;
 
         case 'before':
@@ -352,6 +356,7 @@ class Transform {
 
                 // Count "placeholders" in the message
                 $msg = substr($next->value, 1, -1);
+                $this->currentBlockTitle = $msg;
                 preg_match_all('/([\'"<])[^\s]+(\1|>)/', $msg, $m);
                 for ($i=1; $i<=count($m[0]); $i++) {
                     $args[] = '$arg' . $i;
@@ -460,6 +465,9 @@ class Transform {
             $this->write(self::SPEC_CLASS . '::expect(');
             if($this->statement->isEmpty()) {
                 $this->write(self::SPEC_CLASS . '::test()->subject($W)');
+                if ($this->blocks->top() == 'its') {
+                    $this->write('->'.$this->currentBlockTitle);
+                }
             } else {
                 $this->dumpStatement();
             }

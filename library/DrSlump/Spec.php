@@ -292,6 +292,10 @@ class Spec
         $groups = $runHelper->findGroups($test);
         $suite->addTest($test, $groups);
     }
+    public static function its($title, $cb)
+    {
+        self::it($title, $cb);
+    }
 
     /**
      * Register a _before_ hook in the current suite

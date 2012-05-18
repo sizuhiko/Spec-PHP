@@ -28,6 +28,12 @@ describe "Subject"
     end
   end
 
+  context "it can be empty, it apply 'subject' for default title"
+    it
+      should equal 1
+    end
+  end
+
   context "use $this"
     it "subject == 1"
       $this->subject($W) should equal 1

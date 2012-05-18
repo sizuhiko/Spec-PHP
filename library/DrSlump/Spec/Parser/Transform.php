@@ -314,6 +314,7 @@ class Transform {
     {
         $lval = strtolower($token->value);
         $hasMessage = false;
+        $messageRequire = false;
 
         // Convert aliases
         if ($lval === 'context') $lval = 'describe';
@@ -321,8 +322,9 @@ class Transform {
 
         switch ($lval) {
         case 'describe':
-        case 'it':
         case 'its':
+            $messageRequire = true;
+        case 'it':
             $hasMessage = true;
 
         case 'before':
@@ -348,9 +350,9 @@ class Transform {
             $this->write(self::SPEC_CLASS . '::' . $lval . '(');
 
             $args = array('$W');
-            if ($hasMessage && $next->type !== Token::QUOTED) {
+            if ($messageRequire && $next->type !== Token::QUOTED) {
                 throw new Exception('Expected quoted string at line ' . $token->line);
-            } else if ($hasMessage) {
+            } else if ($hasMessage && $next->type == Token::QUOTED) {
                 $this->write($next->value);
                 $this->write(', ');
 

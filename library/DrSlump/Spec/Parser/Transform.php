@@ -344,9 +344,6 @@ class Transform {
             $this->write(self::SPEC_CLASS . '::' . $lval . '(');
 
             $args = array('$W');
-            if($lval == 'it') {
-                $args[] = '$suite';
-            }
             if ($hasMessage && $next->type !== Token::QUOTED) {
                 throw new Exception('Expected quoted string at line ' . $token->line);
             } else if ($hasMessage) {
@@ -462,7 +459,7 @@ class Transform {
             // Define the expectation wrapper
             $this->write(self::SPEC_CLASS . '::expect(');
             if($this->statement->isEmpty()) {
-                $this->write('$suite->runSubject($W)');
+                $this->write(self::SPEC_CLASS . '::test()->subject($W)');
             } else {
                 $this->dumpStatement();
             }

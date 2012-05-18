@@ -283,8 +283,15 @@ class Spec
      * @param string $title
      * @param closure $cb
      */
-    public static function it($title, $cb)
+    public static function it($title, $cb=false)
     {
+        if (!$cb) {
+            if (!is_callable($title)) {
+                throw new \RuntimeException("It can not found callback block");
+            }
+            $cb = $title;
+            $title = "subject";
+        }
         $runHelper = self::getRunHelper();
 
         $suite = self::suite();

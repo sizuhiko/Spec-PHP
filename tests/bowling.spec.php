@@ -28,7 +28,7 @@ describe "Bowling#score"
   end
 end
 
-describe "Bowling#score"
+describe "Bowling#score use subject and it"
   context "all gutter game"
     subject
       $bowling = new Bowling;
@@ -36,6 +36,19 @@ describe "Bowling#score"
       return $bowling->score;
     end
     it "returns 0"
+      should equal 0
+    end
+  end
+end
+
+describe "Bowling#score use subject and its"
+  context "all gutter game"
+    subject
+      $bowling = new Bowling;
+      array_filter(range(0, 19), function() use($bowling) { $bowling->hit(0); } );
+      return $bowling;
+    end
+    its "score"
       should equal 0
     end
   end

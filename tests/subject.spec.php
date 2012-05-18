@@ -43,5 +43,8 @@ describe "Subject"
     its "expect"
       should equal 10
     end
+    it "expect == 10"
+      $this->subject($W)->expect should equal 10
+    end
   end
 end

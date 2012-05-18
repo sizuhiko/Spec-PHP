@@ -34,4 +34,14 @@ describe "Subject"
     end
   end
 
+  context "use its"
+    subject
+      $test = new \stdClass();
+      $test->expect = 10;
+      return $test;
+    end
+    its "expect"
+      should equal 10
+    end
+  end
 end

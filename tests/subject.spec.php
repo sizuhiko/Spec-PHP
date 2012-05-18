@@ -28,4 +28,10 @@ describe "Subject"
     end
   end
 
+  context "use $this"
+    it "subject == 1"
+      $this->subject($W) should equal 1
+    end
+  end
+
 end

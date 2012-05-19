@@ -283,14 +283,25 @@ class Spec
      * @param string $title
      * @param closure $cb
      */
-    public static function it($title, $cb)
+    public static function it($title, $cb=false)
     {
+        if (!$cb) {
+            if (!is_callable($title)) {
+                throw new \RuntimeException("It can not found callback block");
+            }
+            $cb = $title;
+            $title = "subject";
+        }
         $runHelper = self::getRunHelper();
 
         $suite = self::suite();
         $test = $runHelper->buildTest($suite, $title, $cb);
         $groups = $runHelper->findGroups($test);
         $suite->addTest($test, $groups);
+    }
+    public static function its($title, $cb)
+    {
+        self::it($title, $cb);
     }
 
     /**
@@ -369,6 +380,17 @@ class Spec
         $dir = realpath($dir);
 
         return $dir;
+    }
+
+    /**
+     * Register subject in the current suite
+     *
+     * @static
+     * @param Closure $cb 
+     */
+    public static function subject($cb)
+    {
+        self::suite()->setSubject($cb);
     }
 
 }

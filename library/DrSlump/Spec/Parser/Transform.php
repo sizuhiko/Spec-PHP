@@ -70,6 +70,9 @@ class Transform {
     protected $curlyLevel = 0;
     protected $curlyBlocks = array();
 
+    // current block value for its block
+    private $currentBlockTitle;
+
     public function __construct(\Iterator $it)
     {
         $this->it = $it;
@@ -122,7 +125,6 @@ class Transform {
             $tkn = $this->it->current();
             throw new Exception("Unexpected exception found while parsing token $tkn->type '$tkn->value' at line $tkn->line", null, $e);
         }
-
         return $this->target;
     }
 
@@ -291,7 +293,7 @@ class Transform {
         case Token::IDENT:
         case Token::RCURLY:
             $ident = strtolower($token->value);
-            if (in_array($ident, array('describe', 'context', 'it', 'specify', 'before', 'before_each', 'after', 'after_each', 'end', '}'))) {
+            if (in_array($ident, array('describe', 'context', 'it', 'its', 'specify', 'before', 'before_each', 'after', 'after_each', 'subject', 'end', '}'))) {
                 $this->dumpStatement();
                 $this->transition(self::BLOCK);
                 return $token;
@@ -312,6 +314,7 @@ class Transform {
     {
         $lval = strtolower($token->value);
         $hasMessage = false;
+        $messageRequire = false;
 
         // Convert aliases
         if ($lval === 'context') $lval = 'describe';
@@ -319,6 +322,8 @@ class Transform {
 
         switch ($lval) {
         case 'describe':
+        case 'its':
+            $messageRequire = true;
         case 'it':
             $hasMessage = true;
 
@@ -326,6 +331,7 @@ class Transform {
         case 'before_each':
         case 'after':
         case 'after_each':
+        case 'subject':
 
             $next = $this->skip(Token::WHITESPACE, Token::DOT);
             if ($next->type === Token::LPAREN) {
@@ -344,14 +350,15 @@ class Transform {
             $this->write(self::SPEC_CLASS . '::' . $lval . '(');
 
             $args = array('$W');
-            if ($hasMessage && $next->type !== Token::QUOTED) {
+            if ($messageRequire && $next->type !== Token::QUOTED) {
                 throw new Exception('Expected quoted string at line ' . $token->line);
-            } else if ($hasMessage) {
+            } else if ($hasMessage && $next->type == Token::QUOTED) {
                 $this->write($next->value);
                 $this->write(', ');
 
                 // Count "placeholders" in the message
                 $msg = substr($next->value, 1, -1);
+                $this->currentBlockTitle = $msg;
                 preg_match_all('/([\'"<])[^\s]+(\1|>)/', $msg, $m);
                 for ($i=1; $i<=count($m[0]); $i++) {
                     $args[] = '$arg' . $i;
@@ -458,7 +465,14 @@ class Transform {
 
             // Define the expectation wrapper
             $this->write(self::SPEC_CLASS . '::expect(');
-            $this->dumpStatement();
+            if($this->statement->isEmpty()) {
+                $this->write(self::SPEC_CLASS . '::test()->subject($W)');
+                if ($this->blocks->top() == 'its') {
+                    $this->write('->'.$this->currentBlockTitle);
+                }
+            } else {
+                $this->dumpStatement();
+            }
             $this->write(')->');
             $this->transition(self::SHOULD);
             return false;

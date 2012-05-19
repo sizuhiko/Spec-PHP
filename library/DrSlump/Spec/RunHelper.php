@@ -144,6 +144,10 @@ class RunHelper
                     parent::onNotSuccessfulTest(\$e);
                 }
 
+                function subject(\$W) {
+                    return \$this->getSuite()->runSubject(\$W);
+                }
+
                 function __isset(\$prop) {
                     return isset(\$this->\$prop);
                 }

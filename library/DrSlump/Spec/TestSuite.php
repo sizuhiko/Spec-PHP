@@ -50,6 +50,8 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
     /** @var closure[] */
     protected $afterEachCallbacks = array();
 
+    /* @var Closure */
+    protected $subject;
 
     public function __construct($theClass = '', $name = '')
     {
@@ -255,6 +257,20 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
         $this->restoreWorldSnapshot();
     }
 
+    public function setSubject($cb) {
+        $this->subject = $cb;
+    }
+
+    public function runSubject($W){
+        if($this->subject) {
+            $callback = $this->subject;
+        } elseif($this->getParent()){
+            return $this->getParent()->runSubject($W);
+        } else {
+            return NULL;
+        }
+        return $callback($W);
+    }
 
     /**
      * Override setUp to execute the before hooks

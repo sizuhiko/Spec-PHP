@@ -145,10 +145,7 @@ class RunHelper
                 }
 
                 function subject(\$W) {
-                    \$W->testcase = \$this;
-                    \$result = \$this->getSuite()->runSubject(\$W);
-                    \$W->testcase = false;
-                    return \$result;
+                    return \$this->getSuite()->runSubject(\$W);
                 }
 
                 function __isset(\$prop) {

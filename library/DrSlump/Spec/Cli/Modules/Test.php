@@ -183,6 +183,20 @@ class Test
             $excluded = array_unique($excluded);
         }
 
+        // Set code coverage result
+        if ((!empty($this->result->options['coverage_clover']) ||
+             !empty($this->result->options['coverage_html']) ||
+             !empty($this->result->options['coverage_php']) ||
+             isset($this->result->options['coverage_text'])) &&
+             extension_loaded('xdebug')) {
+            $codeCoverage = new \PHP_CodeCoverage(
+              NULL, NULL /* code coverage filter */
+            );
+
+            $codeCoverage->setProcessUncoveredFilesFromWhitelist(TRUE);
+            $result->setCodeCoverage($codeCoverage);
+        }
+
 
         try {
 
@@ -220,5 +234,87 @@ class Test
         $result->flushListeners();
 
         $printer->printResult($result);
+
+
+        // print code coverage result
+        if (isset($codeCoverage)) {
+            $title = '';
+
+            if (!empty($this->result->options['coverage_clover'])) {
+                $printer->write(
+                  "\nWriting code coverage data to XML file, this may take " .
+                  'a moment.'
+                );
+
+                $writer = new \PHP_CodeCoverage_Report_Clover;
+                $writer->process($codeCoverage, $this->result->options['coverage_clover']);
+
+                $printer->write("\n");
+                unset($writer);
+            }
+
+            if (!empty($this->result->options['coverage_html'])) {
+                $printer->write(
+                  "\nGenerating code coverage report, this may take a moment."
+                );
+
+                $writer = new \PHP_CodeCoverage_Report_HTML(
+                  $title,
+                  'UTF-8', // $arguments['reportCharset'],
+                  TRUE,    // $arguments['reportYUI'],
+                  FALSE,   // $arguments['reportHighlight'],
+                  35,      // $arguments['reportLowUpperBound'],
+                  70,      // $arguments['reportHighLowerBound'],
+                  ' and PHPUnit ' . \PHPUnit_Runner_Version::id()
+                );
+
+                $writer->process($codeCoverage, $this->result->options['coverage_html']);
+
+                $printer->write("\n");
+                unset($writer);
+            }
+
+            if (!empty($this->result->options['coverage_php'])) {
+                $printer->write(
+                  "\nSerializing PHP_CodeCoverage object to file, this may take a moment."
+                );
+
+                $writer = new \PHP_CodeCoverage_Report_PHP;
+                $writer->process($codeCoverage, $this->result->options['coverage_php']);
+
+                $printer->write("\n");
+                unset($writer);
+            }
+
+            if (isset($this->result->options['coverage_text'])) {
+                $printer->write(
+                  "\nGenerating textual code coverage report, this may take a moment."
+                );
+                if (empty($this->result->options['coverage_text'])) {
+                    $this->result->options['coverage_text'] = 'php://stdout';
+                }
+
+                if ($this->result->options['coverage_text'] == 'php://stdout') {
+                    $outputStream = $printer;
+                    $colors       = (bool)$arguments['colors'];
+                } else {
+                    $outputStream = new \PHPUnit_Util_Printer($this->result->options['coverage_text']);
+                    $colors       = FALSE;
+                }
+
+                $writer = new \PHP_CodeCoverage_Report_Text(
+                  $outputStream,
+                  $title,
+                  35,   // $arguments['reportLowUpperBound'],
+                  70,   // $arguments['reportHighLowerBound'],
+                  FALSE // $arguments['coverageTextShowUncoveredFiles']
+                );
+
+                $writer->process($codeCoverage, $colors);
+
+                $printer->write("\n");
+            }
+        }
+
     }
 }

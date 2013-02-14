@@ -11,7 +11,7 @@
       {
           "name":      "Kenichiro Kishida",
           "email":     "sizuhiko@gmail.com"
-      },
+      }
     ],
 
     "autoload": {

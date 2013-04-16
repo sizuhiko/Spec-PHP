@@ -139,7 +139,7 @@ class RunHelper
                     \DrSlump\Spec::getRunHelper()->disposeTest(\$this);
                 }
 
-                function onNotSuccessfulTest(\$e) {
+                function onNotSuccessfulTest(Exeception \$e) {
                     \$e = \DrSlump\Spec::getRunHelper()->onNotSuccessfulTest(\$this, \$e);
                     parent::onNotSuccessfulTest(\$e);
                 }

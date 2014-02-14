@@ -1,0 +1,36 @@
+{
+    "name": "sizuhiko/spec-php",
+    "type": "library",
+    "description": "This is forked Spec-PHP, and support RSpec2 syntaxs, composer.",
+    "keywords": ["bdd", "spec", "test"],
+    "license": "MIT",
+    "authors": [
+      {
+          "name":      "Iván -DrSlump- Montes"
+      },
+      {
+          "name":      "Kenichiro Kishida",
+          "email":     "sizuhiko@gmail.com"
+      }
+    ],
+
+    "autoload": {
+        "psr-0": {
+            "DrSlump": "library"
+        }
+    },
+
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.phpunit.de"
+        }
+    ],    
+
+    "require": {
+        "php":          ">=5.3.2",
+        "pear-phpunit/Object_Freezer": "*",
+        "davedevelopment/hamcrest-php": "dev-master",
+        "pear/console_commandline": "dev-trunk"
+    }
+}

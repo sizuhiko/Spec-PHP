@@ -25,7 +25,7 @@ use DrSlump\Spec;
 class Expect
 {
 
-    /** @var \Hamcrest_Matcher */
+    /** @var \Hamcrest\Matcher */
     protected $subject;
     /** @var String */
     protected $message;
@@ -230,7 +230,7 @@ class Expect
         // Instantiate the matcher
         $matcher = call_user_func_array($callback, $args);
         if ($isNegation) {
-            $matcher = \Hamcrest_Core_IsNot::not($matcher);
+            $matcher = \Hamcrest\Core\IsNot::not($matcher);
         }
 
         $this->expression->addOperand($matcher);

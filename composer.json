@@ -4,6 +4,10 @@
     "description": "This is forked Spec-PHP, and support RSpec2 syntaxs, composer.",
     "keywords": ["bdd", "spec", "test"],
     "license": "MIT",
+    "minimum-stability": "dev",
+    "config": {
+        "process-timeout": "1000"
+    },
     "authors": [
       {
           "name":      "Iván -DrSlump- Montes"
@@ -19,18 +23,12 @@
             "DrSlump": "library"
         }
     },
-
-    "repositories": [
-        {
-            "type": "pear",
-            "url": "http://pear.phpunit.de"
-        }
-    ],    
+    "include-path": ["library/Object_Freezer/"],
 
     "require": {
         "php":          ">=5.3.2",
-        "pear-phpunit/Object_Freezer": "*",
-        "davedevelopment/hamcrest-php": "dev-master",
-        "pear/console_commandline": "dev-trunk"
+        "pear/console_commandline": "dev-trunk",
+        "hamcrest/hamcrest-php": "1.1.0",
+        "phpunit/phpunit": "3.7.*"
     }
 }

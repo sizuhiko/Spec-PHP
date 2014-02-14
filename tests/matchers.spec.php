@@ -254,6 +254,11 @@ describe. "Spec matchers".
             'いろは' should be string;
             "いろは" should have type 'string';
             'いろは' should be scalar;
+            $text = '';
+            for($i = 0; $i < 10; $i++) {
+                $text = $text.$i;
+            }
+            $text should equal "0123456789"
 
             any(array(1, '２', 3)) should be string;
         end.

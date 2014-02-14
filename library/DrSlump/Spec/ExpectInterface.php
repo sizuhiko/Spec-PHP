@@ -26,5 +26,5 @@ interface ExpectInterface
 {
     public function __construct($value);
 
-    public function doAssert(\Hamcrest_Matcher $matcher, $message = null);
+    public function doAssert(\Hamcrest\Matcher $matcher, $message = null);
 }

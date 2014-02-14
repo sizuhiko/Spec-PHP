@@ -28,7 +28,7 @@ namespace DrSlump\Spec\Matcher;
  * @copyright   Copyright 2011, Iván -DrSlump- Montes
  * @license     http://creativecommons.org/licenses/MIT     The MIT License
  */
-class Callback extends \Hamcrest_BaseMatcher
+class Callback extends \Hamcrest\BaseMatcher
 {
     /** @var array Array of arguments given to the constructor */
     protected $expected;
@@ -73,7 +73,7 @@ class Callback extends \Hamcrest_BaseMatcher
      * @param Hamcrest_Description $description
      *   The description to be built or appended to.
      */
-    public function describeTo(\Hamcrest_Description $description)
+    public function describeTo(\Hamcrest\Description $description)
     {
         if (empty($this->description)) {
             foreach ($this->expected as $expected) {

@@ -10,19 +10,6 @@
 
 use DrSlump\Spec;
 
-// Include Hamcrest core library
-require_once 'Hamcrest/Core/AnyOf.php';
-require_once 'Hamcrest/Core/AllOf.php';
-require_once 'Hamcrest/Core/Every.php';
-require_once 'Hamcrest/Core/IsCollectionContaining.php';
-// Include Hamcrest matchers library
-require_once 'Hamcrest/MatcherAssert.php';
-require_once 'Hamcrest/Matchers.php';
-// Hamcrest does not include these ones by default
-require_once 'Hamcrest/Type/IsNumeric.php';
-require_once 'Hamcrest/Type/IsCallable.php';
-
-
 // Matcher names should be written as if they were to complete the
 // sentence "value should ...". Words like 'be', 'to', 'at', 'the' ...
 // will be automatically ignored but when Spec finds two conflicting
@@ -30,65 +17,65 @@ require_once 'Hamcrest/Type/IsCallable.php';
 
 $matchers = Spec::matchers();
 
-$matchers['be equal to'] = '\Hamcrest_Matchers::equalTo';
-$matchers['be eq to'] = '\Hamcrest_Matchers::equalTo';
+$matchers['be equal to'] = '\Hamcrest\Matchers::equalTo';
+$matchers['be eq to'] = '\Hamcrest\Matchers::equalTo';
 
-$matchers['be the same to'] = '\Hamcrest_Matchers::identicalTo';
-$matchers['be identical to'] = '\Hamcrest_Matchers::identicalTo';
-$matchers['be exactly'] = '\Hamcrest_Matchers::identicalTo';
-$matchers['be exactly equal to'] = '\Hamcrest_Matchers::identicalTo';
+$matchers['be the same to'] = '\Hamcrest\Matchers::identicalTo';
+$matchers['be identical to'] = '\Hamcrest\Matchers::identicalTo';
+$matchers['be exactly'] = '\Hamcrest\Matchers::identicalTo';
+$matchers['be exactly equal to'] = '\Hamcrest\Matchers::identicalTo';
 
-$matchers['be at most'] = '\Hamcrest_Matchers::lessThanOrEqualTo';
-$matchers['be less equal to'] = '\Hamcrest_Matchers::lessThanOrEqualTo';
-$matchers['be less equal than'] = '\Hamcrest_Matchers::lessThanOrEqualTo';
-$matchers['be le to'] = '\Hamcrest_Matchers::lessThanOrEqualTo';
-$matchers['be le than'] = '\Hamcrest_Matchers::lessThanOrEqualTo';
+$matchers['be at most'] = '\Hamcrest\Matchers::lessThanOrEqualTo';
+$matchers['be less equal to'] = '\Hamcrest\Matchers::lessThanOrEqualTo';
+$matchers['be less equal than'] = '\Hamcrest\Matchers::lessThanOrEqualTo';
+$matchers['be le to'] = '\Hamcrest\Matchers::lessThanOrEqualTo';
+$matchers['be le than'] = '\Hamcrest\Matchers::lessThanOrEqualTo';
 
-$matchers['be at least'] = '\Hamcrest_Matchers::greaterThanOrEqualTo';
-$matchers['be more equal to'] = '\Hamcrest_Matchers::greaterThanOrEqualTo';
-$matchers['be more equal than'] = '\Hamcrest_Matchers::greaterThanOrEqualTo';
-$matchers['be greater equal to'] = '\Hamcrest_Matchers::greaterThanOrEqualTo';
-$matchers['be greater equal than'] = '\Hamcrest_Matchers::greaterThanOrEqualTo';
-$matchers['be ge to'] = '\Hamcrest_Matchers::greaterThanOrEqualTo';
-$matchers['be ge than'] = '\Hamcrest_Matchers::greaterThanOrEqualTo';
+$matchers['be at least'] = '\Hamcrest\Matchers::greaterThanOrEqualTo';
+$matchers['be more equal to'] = '\Hamcrest\Matchers::greaterThanOrEqualTo';
+$matchers['be more equal than'] = '\Hamcrest\Matchers::greaterThanOrEqualTo';
+$matchers['be greater equal to'] = '\Hamcrest\Matchers::greaterThanOrEqualTo';
+$matchers['be greater equal than'] = '\Hamcrest\Matchers::greaterThanOrEqualTo';
+$matchers['be ge to'] = '\Hamcrest\Matchers::greaterThanOrEqualTo';
+$matchers['be ge than'] = '\Hamcrest\Matchers::greaterThanOrEqualTo';
 
-$matchers['be greater than'] = '\Hamcrest_Matchers::greaterThan';
-$matchers['be more than'] = '\Hamcrest_Matchers::greaterThan';
+$matchers['be greater than'] = '\Hamcrest\Matchers::greaterThan';
+$matchers['be more than'] = '\Hamcrest\Matchers::greaterThan';
 
-$matchers['be less than'] = '\Hamcrest_Matchers::lessThan';
+$matchers['be less than'] = '\Hamcrest\Matchers::lessThan';
 
-$matchers['be an instance of'] = '\Hamcrest_Matchers::anInstanceOf';
-$matchers['be an instanceof'] = '\Hamcrest_Matchers::anInstanceOf';
+$matchers['be an instance of'] = '\Hamcrest\Matchers::anInstanceOf';
+$matchers['be an instanceof'] = '\Hamcrest\Matchers::anInstanceOf';
 
-$matchers['be an empty string'] = '\Hamcrest_Matchers::isEmptyString';
-$matchers['be an empty array'] = '\Hamcrest_Matchers::emptyArray';
+$matchers['be an empty string'] = '\Hamcrest\Matchers::isEmptyString';
+$matchers['be an empty array'] = '\Hamcrest\Matchers::emptyArray';
 
-$matchers['be of type'] = '\Hamcrest_Matchers::typeOf';
-$matchers['has type of'] = '\Hamcrest_Matchers::typeOf';
-$matchers['have type of'] = '\Hamcrest_Matchers::typeOf';
+$matchers['be of type'] = '\Hamcrest\Matchers::typeOf';
+$matchers['has type of'] = '\Hamcrest\Matchers::typeOf';
+$matchers['have type of'] = '\Hamcrest\Matchers::typeOf';
 
-$matchers['be an array'] = '\Hamcrest_Matchers::arrayValue';
-$matchers['be a string'] = '\Hamcrest_Matchers::stringValue';
-$matchers['be a boolean'] = '\Hamcrest_Matchers::booleanValue';
-$matchers['be a bool'] = '\Hamcrest_Matchers::booleanValue';
-$matchers['be a double'] = '\Hamcrest_Matchers::doubleValue';
-$matchers['be a float'] = '\Hamcrest_Matchers::floatValue';
-$matchers['be an integer'] = '\Hamcrest_Matchers::integerValue';
-$matchers['be an int'] = '\Hamcrest_Matchers::integerValue';
-$matchers['be an object'] = '\Hamcrest_Matchers::objectValue';
-$matchers['be a resource'] = '\Hamcrest_Matchers::resourceValue';
+$matchers['be an array'] = '\Hamcrest\Matchers::arrayValue';
+$matchers['be a string'] = '\Hamcrest\Matchers::stringValue';
+$matchers['be a boolean'] = '\Hamcrest\Matchers::booleanValue';
+$matchers['be a bool'] = '\Hamcrest\Matchers::booleanValue';
+$matchers['be a double'] = '\Hamcrest\Matchers::doubleValue';
+$matchers['be a float'] = '\Hamcrest\Matchers::floatValue';
+$matchers['be an integer'] = '\Hamcrest\Matchers::integerValue';
+$matchers['be an int'] = '\Hamcrest\Matchers::integerValue';
+$matchers['be an object'] = '\Hamcrest\Matchers::objectValue';
+$matchers['be a resource'] = '\Hamcrest\Matchers::resourceValue';
 
-$matchers['be a scalar'] = '\Hamcrest_Matchers::scalarValue';
-$matchers['be a scalar value'] = '\Hamcrest_Matchers::scalarValue';
-$matchers['be numeric'] = '\Hamcrest_Matchers::numericValue';
-$matchers['be a numeric value'] = '\Hamcrest_Matchers::numericValue';
-$matchers['be callable'] = '\Hamcrest_Matchers::callableValue';
-$matchers['be a callable value'] = '\Hamcrest_Matchers::callableValue';
+$matchers['be a scalar'] = '\Hamcrest\Matchers::scalarValue';
+$matchers['be a scalar value'] = '\Hamcrest\Matchers::scalarValue';
+$matchers['be numeric'] = '\Hamcrest\Matchers::numericValue';
+$matchers['be a numeric value'] = '\Hamcrest\Matchers::numericValue';
+$matchers['be callable'] = '\Hamcrest\Matchers::callableValue';
+$matchers['be a callable value'] = '\Hamcrest\Matchers::callableValue';
 
-$matchers['be a null'] = '\Hamcrest_Matchers::nullValue';
-$matchers['be a null value'] = '\Hamcrest_Matchers::nullValue';
-$matchers['be a nil'] = '\Hamcrest_Matchers::nullValue';
-$matchers['be a nil value'] = '\Hamcrest_Matchers::nullValue';
+$matchers['be a null'] = '\Hamcrest\Matchers::nullValue';
+$matchers['be a null value'] = '\Hamcrest\Matchers::nullValue';
+$matchers['be a nil'] = '\Hamcrest\Matchers::nullValue';
+$matchers['be a nil value'] = '\Hamcrest\Matchers::nullValue';
 
 $matchers['be a true'] = '\DrSlump\Spec\Matcher\True::trueValue';
 $matchers['be a true value'] = '\DrSlump\Spec\Matcher\True::trueValue';
@@ -107,16 +94,16 @@ $matchers['be a falsy value'] = '\DrSlump\Spec\Matcher\Falsy::falsyValue';
 $matchers['be empty'] = '\DrSlump\Spec\Matcher\IsEmpty::emptyValue';
 $matchers['be an empty value'] = '\DrSlump\Spec\Matcher\IsEmpty::emptyValue';
 
-$matchers['contain'] = '\Hamcrest_Matchers::hasItemInArray';
-$matchers['have an item'] = '\Hamcrest_Matchers::hasItemInArray';
-$matchers['have an item like'] = '\Hamcrest_Matchers::hasItemInArray';
+$matchers['contain'] = '\Hamcrest\Matchers::hasItemInArray';
+$matchers['have an item'] = '\Hamcrest\Matchers::hasItemInArray';
+$matchers['have an item like'] = '\Hamcrest\Matchers::hasItemInArray';
 
-$matchers['contain the key'] = '\Hamcrest_Matchers::hasKeyInArray';
-$matchers['have the key'] = '\Hamcrest_Matchers::hasKeyInArray';
+$matchers['contain the key'] = '\Hamcrest\Matchers::hasKeyInArray';
+$matchers['have the key'] = '\Hamcrest\Matchers::hasKeyInArray';
 
-$matchers['have a length of'] = '\Hamcrest_Matchers::arrayWithSize';
-$matchers['have a count of'] = '\Hamcrest_Matchers::arrayWithSize';
-$matchers['count'] = '\Hamcrest_Matchers::arrayWithSize';
+$matchers['have a length of'] = '\Hamcrest\Matchers::arrayWithSize';
+$matchers['have a count of'] = '\Hamcrest\Matchers::arrayWithSize';
+$matchers['count'] = '\Hamcrest\Matchers::arrayWithSize';
 
 // TODO: Define the rest of Hamcrest's collection related matchers
 

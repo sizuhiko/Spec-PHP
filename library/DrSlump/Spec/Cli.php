@@ -149,6 +149,46 @@ class Cli
             )
         );
 
+        $main->addOption(
+            'coverage_html',
+            array(
+                'long_name'     => '--coverage-html',
+                'action'        => 'StoreString',
+                'help_name'     => 'dir',
+                'description'   => 'Generate code coverage report in HTML format.'
+            )
+        );
+
+        $main->addOption(
+            'coverage_clover',
+            array(
+                'long_name'     => '--coverage-clover',
+                'action'        => 'StoreString',
+                'help_name'     => 'file',
+                'description'   => 'Generate code coverage report in Clover XML format.'
+            )
+        );
+
+        $main->addOption(
+            'coverage_php',
+            array(
+                'long_name'     => '--coverage-php',
+                'action'        => 'StoreString',
+                'help_name'     => 'file',
+                'description'   => 'Serialize PHP_CodeCoverage object to file.'
+            )
+        );
+
+        $main->addOption(
+            'coverage_text',
+            array(
+                'long_name'     => '--coverage-text',
+                'action'        => 'StoreString',
+                'help_name'     => 'file',
+                'description'   => 'Generate code coverage report in text format. Default to writing to the standard output.'
+            )
+        );
+
         $main->addArgument(
             'files',
             array(

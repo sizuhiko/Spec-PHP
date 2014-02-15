@@ -48,6 +48,7 @@ _alpha_ quality software for the time being.
  - PHPUnit integration
  - Use annotation to inherit from custom PHPUnit_TestCase class (ie: Zend_Test)
  - Matcher factory to create matchers with a callback function
+ - Any RSpec2 features (subject, its)
 
 ### Upcoming
 
@@ -64,31 +65,24 @@ _alpha_ quality software for the time being.
 ## Requirements
 
  - PHP 5.3
- - PHPUnit 3 (**Only supports 3.5.15, a version supporting 3.6 is in progress**)
- - Hamcrest matchers library
- - PHP Object_Freezer 1.0.0
-
+ - Composer
 
 ## Installation
 
-Install a recent version of PHPUnit and PHP Object_Freezer
+Using composer
 
-    pear channel-discover pear.phpunit.de
-    pear install phpunit/PHPUnit-3.5.15
-    pear install phpunit/Object_Freezer
+Add the library to your project's `composer.json` - something like this:
 
-Install Hamcrest matchers library
+    {
+        "require": {
+            "sizuhiko/spec-php": "0.9.*"
+        }
+    }
 
-    pear channel-discover hamcrest.googlecode.com/svn/pear
-    pear install hamcrest/Hamcrest
+Or, Add the following to your `composer.json` from CLI:
 
-Install Spec for PHP
+    composer require sizuhiko/spec-php:0.9.*
 
-    pear channel-discover pear.pollinimini.net
-    pear install drslump/Spec-beta
-
-You can also get the latest version by checking a copy of the repository
-in your computer.
 
 To do a test run, simply checkout the repository to get the tests directory
 and run the following commands:

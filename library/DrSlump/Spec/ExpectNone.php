@@ -32,19 +32,19 @@ class ExpectNone implements ExpectInterface
         $this->value = $value;
     }
 
-    public function doAssert(\Hamcrest_Matcher $matcher, $message = null)
+    public function doAssert(\Hamcrest\Matcher $matcher, $message = null)
     {
-        $matcher = \Hamcrest_Core_IsCollectionContaining::hasItem($matcher);
-        $matcher = \Hamcrest_Core_IsNot::not($matcher);
+        $matcher = \Hamcrest\Core\IsCollectionContaining::hasItem($matcher);
+        $matcher = \Hamcrest\Core\IsNot::not($matcher);
 
         if (!empty($message)) {
-            \Hamcrest_MatcherAssert::assertThat(
+            \Hamcrest\MatcherAssert::assertThat(
                 $message,
                 $this->value,
                 $matcher
             );
         } else {
-            \Hamcrest_MatcherAssert::assertThat(
+            \Hamcrest\MatcherAssert::assertThat(
                 $this->value,
                 $matcher
             );

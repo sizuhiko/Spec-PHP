@@ -12,14 +12,14 @@ namespace DrSlump\Spec\Matcher;
 /**
  * Is the value falsy? Casts the value to bool and checks for true
  */
-class Falsy extends \Hamcrest_BaseMatcher
+class Falsy extends \Hamcrest\BaseMatcher
 {
     public function matches($arg)
     {
         return $arg == false;
     }
 
-    public function describeTo(\Hamcrest_Description $description)
+    public function describeTo(\Hamcrest\Description $description)
     {
         $description->appendText('falsy');
     }

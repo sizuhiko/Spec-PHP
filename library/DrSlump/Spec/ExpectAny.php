@@ -32,18 +32,18 @@ class ExpectAny implements ExpectInterface
         $this->value = $value;
     }
 
-    public function doAssert(\Hamcrest_Matcher $matcher, $message = null)
+    public function doAssert(\Hamcrest\Matcher $matcher, $message = null)
     {
         if (!empty($message)) {
-            \Hamcrest_MatcherAssert::assertThat(
+            \Hamcrest\MatcherAssert::assertThat(
                 $message,
                 $this->value,
-                \Hamcrest_Core_IsCollectionContaining::hasItem($matcher)
+                \Hamcrest\Core\IsCollectionContaining::hasItem($matcher)
             );
         } else {
-            \Hamcrest_MatcherAssert::assertThat(
+            \Hamcrest\MatcherAssert::assertThat(
                 $this->value,
-                \Hamcrest_Core_IsCollectionContaining::hasItem($matcher)
+                \Hamcrest\Core\IsCollectionContaining::hasItem($matcher)
             );
         }
     }

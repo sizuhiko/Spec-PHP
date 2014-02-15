@@ -10,7 +10,7 @@
 
 
 // Include this file into CodeCoverage's blacklist
-require_once 'PHPUnit/Autoload.php';
+require_once __DIR__ .'/vendor/autoload.php';
 
 if (extension_loaded('xdebug')) {
     xdebug_disable();

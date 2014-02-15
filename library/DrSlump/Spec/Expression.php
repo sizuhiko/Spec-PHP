@@ -24,7 +24,7 @@ class Expression
         $this->parts[] = $op;
     }
 
-    public function addOperand(\Hamcrest_Matcher $matcher)
+    public function addOperand(\Hamcrest\Matcher $matcher)
     {
         $this->parts[] = $matcher;
     }
@@ -34,7 +34,7 @@ class Expression
      * coordination operators to operands according to their binding rules
      *
      * @throws \RuntimeException
-     * @return \Hamcrest_Matcher
+     * @return \Hamcrest\Matcher
      */
     public function build()
     {
@@ -76,9 +76,9 @@ class Expression
 
                 // Check what kind of matcher we need to create
                 if ($token->getKeyword() === 'OR') {
-                    $matcher = new \Hamcrest_Core_AnyOf($operands);
+                    $matcher = new \Hamcrest\Core\AnyOf($operands);
                 } else { // AND, BUT
-                    $matcher = new \Hamcrest_Core_AllOf($operands);
+                    $matcher = new \Hamcrest\Core\AllOf($operands);
                 }
 
                 $stack->push($matcher);

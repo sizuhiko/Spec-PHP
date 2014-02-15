@@ -225,7 +225,7 @@ class RunHelper
             $test->status = \PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
         } elseif ($e instanceof \PHPUnit_Framework_AssertionFailedError ||
                   $e instanceof \PHPUnit_Framework_ExpectationFailedException ||
-                  $e instanceof \Hamcrest_AssertionError) {
+                  $e instanceof \Hamcrest\AssertionError) {
             $exClass = '\PHPUnit_Framework_SyntheticError';
             $test->status = \PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
         } else {
@@ -334,8 +334,8 @@ class RunHelper
         // @todo Move callback invocation logic here
         $suite->runBeforeEachCallbacks($test);
 
-        if (class_exists('\Hamcrest_MatcherAssert', true)) {
-            $test->hamcrestAssertCount = \Hamcrest_MatcherAssert::getCount();
+        if (class_exists('\Hamcrest\MatcherAssert', true)) {
+            $test->hamcrestAssertCount = \Hamcrest\MatcherAssert::getCount();
         }
     }
 
@@ -346,8 +346,8 @@ class RunHelper
      */
     public function tearDown(Spec\TestCaseInterface $test)
     {
-        if (class_exists('\Hamcrest_MatcherAssert', true)) {
-            $test->addToAssertionCount(\Hamcrest_MatcherAssert::getCount() - $test->hamcrestAssertCount);
+        if (class_exists('\Hamcrest\MatcherAssert', true)) {
+            $test->addToAssertionCount(\Hamcrest\MatcherAssert::getCount() - $test->hamcrestAssertCount);
         }
 
         $suite = $test->getSuite();

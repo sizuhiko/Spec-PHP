@@ -12,14 +12,14 @@ namespace DrSlump\Spec\Matcher;
 /**
  * Is the value empty? Uses PHP empty() to check the value
  */
-class IsEmpty extends \Hamcrest_BaseMatcher
+class IsEmpty extends \Hamcrest\BaseMatcher
 {
     public function matches($arg)
     {
         return empty($arg);
     }
 
-    public function describeTo(\Hamcrest_Description $description)
+    public function describeTo(\Hamcrest\Description $description)
     {
         $description->appendText('empty');
     }

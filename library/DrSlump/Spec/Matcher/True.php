@@ -12,14 +12,14 @@ namespace DrSlump\Spec\Matcher;
 /**
  * Is the value a boolean and true?
  */
-class True extends \Hamcrest_BaseMatcher
+class True extends \Hamcrest\BaseMatcher
 {
     public function matches($arg)
     {
         return $arg === true;
     }
 
-    public function describeTo(\Hamcrest_Description $description)
+    public function describeTo(\Hamcrest\Description $description)
     {
         $description->appendText('boolean and true');
     }

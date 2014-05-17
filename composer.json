@@ -27,8 +27,8 @@
 
     "require": {
         "php":          ">=5.3.2",
-        "pear/console_commandline": "dev-trunk",
-        "hamcrest/hamcrest-php": "1.1.0",
+        "pear/console_commandline": "dev-trunk@dev",
+        "hamcrest/hamcrest-php": "1.1.*",
         "phpunit/phpunit": "3.7.*"
     }
 }

@@ -170,7 +170,7 @@ class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter implements \PHPUnit_Fr
         $dnLine = str_repeat($this->colors ? '▔' : '-', $this->maxColumns);
         $arrow = $this->colors ? '❯' : '=>';
 
-        $this->printFailures();
+        $this->printFailures(new \PHPUnit_Framework_TestResult());
         if (!count($this->exceptions)) {
             $ch = $this->colors ? ' ✔' : '';
             $upLine = "\033[32m" . $upLine . "\n\033[0m";
@@ -215,7 +215,7 @@ class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter implements \PHPUnit_Fr
      * Prints the failures and errors found so far
      *
      */
-    public function printFailures()
+    public function printFailures(\PHPUnit_Framework_TestResult $result)
     {
         $this->write(PHP_EOL);
         if (count($this->exceptions)) {

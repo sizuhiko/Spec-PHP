@@ -9,9 +9,6 @@
 
 namespace DrSlump\Spec\Coverage;
 
-require_once 'PHPUnit/Autoload.php';
-require_once 'PHP/CodeCoverage/Filter.php';
-
 /**
  * Extends a PHP CodeCoverage Filter to maintain backward for Spec
  *

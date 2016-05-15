@@ -5,9 +5,6 @@
     "keywords": ["bdd", "spec", "test"],
     "license": "MIT",
     "minimum-stability": "dev",
-    "config": {
-        "process-timeout": "1000"
-    },
     "authors": [
       {
           "name":      "Iván -DrSlump- Montes"
@@ -28,7 +25,7 @@
     "require": {
         "php":          ">=5.3.2",
         "pear/console_commandline": "dev-trunk@dev",
-        "hamcrest/hamcrest-php": "1.1.*",
-        "phpunit/phpunit": "3.7.*"
+        "hamcrest/hamcrest-php": "2.0.*",
+        "phpunit/phpunit": "4.8.5"
     }
 }
